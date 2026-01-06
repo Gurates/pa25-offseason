@@ -2,9 +2,7 @@ package frc.robot;
 
 import org.ironmaple.simulation.SimulatedArena;
 import org.ironmaple.simulation.drivesims.SwerveDriveSimulation;
-
 import com.pathplanner.lib.auto.AutoBuilder;
-
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -57,7 +55,7 @@ public class RobotContainer {
         IModuleInterface fl, fr, bl, br;
 
         
-        if (RobotBase.isReal()) {
+        if (RobotBase.isSimulation()) { // isSimulation = real - isReal = simulations
             drivetrainSimulation = new SwerveDriveSimulation(
                 DrivetrainConstants.DRIVETRAIN_CONFIG,
                 RobotConstants.INITIAL_POSE
