@@ -1,26 +1,22 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot;
 
 import org.ironmaple.simulation.SimulatedArena;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.constants.RobotConstants;
-import frc.robot.utils.Logger;
+import frc.robot.susbsystems.drivetrain.implementations.LimelightHelpers;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
-  private final RobotContainer m_robotContainer;
+  private RobotContainer m_robotContainer;
   public static final CTREConfigs ctreConfigs = new CTREConfigs();
 
-  public Robot() {
+  @Override
+  public void robotInit() {
     m_robotContainer = new RobotContainer();
   }
 
@@ -31,16 +27,13 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void disabledInit() {
-  }
+  public void disabledInit() {}
 
   @Override
-  public void disabledPeriodic() {
-  }
+  public void disabledPeriodic() {}
 
   @Override
-  public void disabledExit() {
-  }
+  public void disabledExit() {}
 
   @Override
   public void autonomousInit() {
@@ -58,8 +51,7 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void autonomousExit() {
-  }
+  public void autonomousExit() {}
 
   @Override
   public void teleopInit() {
@@ -69,12 +61,10 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void teleopPeriodic() {
-  }
+  public void teleopPeriodic() {}
 
   @Override
-  public void teleopExit() {
-  }
+  public void teleopExit() {}
 
   @Override
   public void testInit() {
@@ -82,15 +72,37 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void testPeriodic() {
-  }
+  public void testPeriodic() {}
 
   @Override
-  public void testExit() {
-  }
+  public void testExit() {}
 
   @Override
-  public void simulationPeriodic() {
-    SimulatedArena.getInstance().simulationPeriodic();
-  }
+public void simulationPeriodic() {
+
+    SimulatedArena.getInstance().simulationPeriodic();// burayı sil
+
+    Pose2d simPose = m_robotContainer.drivetrainSimulation.getSimulatedDriveTrainPose();
+
+    if (simPose != null) {
+        double[] botPoseArr = new double[11];
+        
+        botPoseArr[0] = simPose.getX();
+        botPoseArr[1] = simPose.getY();
+        botPoseArr[2] = 0.0;
+        botPoseArr[3] = 0.0;
+        botPoseArr[4] = 0.0;
+        botPoseArr[5] = simPose.getRotation().getDegrees();
+        
+        botPoseArr[6] = 0.0;
+        botPoseArr[7] = 1.0;
+        botPoseArr[8] = 0.0;
+        botPoseArr[9] = 0.0;
+        botPoseArr[10] = 0.0;
+
+        LimelightHelpers.setLimelightNTDoubleArray("limelight", "botpose_wpiblue", botPoseArr);
+        
+        LimelightHelpers.setLimelightNTDouble("limelight", "tv", 1.0);
+    }
+}
 }

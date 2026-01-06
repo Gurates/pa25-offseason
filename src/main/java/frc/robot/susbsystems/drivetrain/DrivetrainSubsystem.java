@@ -10,7 +10,10 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.Alert;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.susbsystems.drivetrain.implementations.LimelightHelpers;
 import frc.robot.constants.AutoConstants;
 import frc.robot.constants.DrivetrainConstants;
 import frc.robot.constants.RobotConstants;
@@ -18,16 +21,18 @@ import frc.robot.susbsystems.drivetrain.enums.DriveType;
 import frc.robot.susbsystems.drivetrain.interfaces.IGyroInterface;
 import frc.robot.susbsystems.drivetrain.interfaces.IModuleInterface;
 import frc.robot.utils.Logger;
+import edu.wpi.first.wpilibj.Alert;
+import edu.wpi.first.wpilibj.Alert.AlertType;
+
 
 public class DrivetrainSubsystem extends SubsystemBase {
 
     private final SwerveDrivePoseEstimator estimator;
-
     private final IGyroInterface gyro;
-
     private final IModuleInterface frontLeft, frontRight, backLeft, backRight;
-
     private final PPHolonomicDriveController driveController;
+
+    Alert aprilTagAlert = new Alert("AprilTag", AlertType.kError);
 
     public DrivetrainSubsystem(
             IGyroInterface gyro,
@@ -52,7 +57,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 AutoConstants.DRIVE_PID,
                 AutoConstants.ANGLE_PID);
             
-        //Configure the PathPlanner Autonomous Configuration
         AutoBuilder.configure(
                 this::getPose,
                 this::setPose,
@@ -68,20 +72,26 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
+        updateVisionOdometry();
 
-        // Update the pose estimator with the current module positions and gyro angle
         this.estimator.update(this.getRotation2d(), this.getModulePositions());
 
         Logger.log("Drivetrain/Poses/OdometryPose", this.getPose());
+        System.out.println("AprilTag okundu");
+        aprilTagAlert.set(true);
+    }
+    
+    public void updateVisionOdometry() {
+        boolean hasTarget = LimelightHelpers.getTV("limelight");// isim web arayüzündeki ile aynı olucak
 
-        Logger.log("Drivetrain/Modules/FrontLeft/State", this.frontLeft.getModuleState());
-        Logger.log("Drivetrain/Modules/FrontRight/State", this.frontRight.getModuleState());
-        Logger.log("Drivetrain/Modules/BackLeft/State", this.backLeft.getModuleState());
-        Logger.log("Drivetrain/Modules/BackRight/State", this.backRight.getModuleState());
+        if (hasTarget) {
+            Pose2d visionPose = LimelightHelpers.getBotPose2d_wpiBlue("limelight");
+            
+            double latency = LimelightHelpers.getLatency_Pipeline("limelight") + LimelightHelpers.getLatency_Capture("limelight");
+            double timestamp = Timer.getFPGATimestamp() - (latency / 1000.0);
 
-        Logger.log("Drivetrain/Modules/ModuleStates", this.getModuleStates());
-
-        Logger.log("Drivetrain/Gyro/Angle", gyro.getAngle().getDegrees());
+            this.estimator.addVisionMeasurement(visionPose, timestamp);
+        }
     }
 
     public Rotation2d getRotation2d() {
@@ -89,33 +99,25 @@ public class DrivetrainSubsystem extends SubsystemBase {
     }
 
     public void setModuleStates(SwerveModuleState[] moduleStates) {
-        // Ensure the module states are desaturated to prevent exceeding maximum speed
         SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, RobotConstants.MAX_SPEED);
-
         this.frontLeft.setModuleState(moduleStates[0]);
         this.frontRight.setModuleState(moduleStates[1]);
         this.backLeft.setModuleState(moduleStates[2]);
         this.backRight.setModuleState(moduleStates[3]);
-
-        Logger.log("Drivetrain/Modules/DesiredModuleStates", moduleStates);
     }
 
     public void drive(double xSpeed, double ySpeed, double rSpeed, DriveType driveType) {
-        
         ChassisSpeeds speeds = new ChassisSpeeds(xSpeed, ySpeed, rSpeed);
-
         if (driveType == DriveType.RobotRelative) {
             this.drive(speeds);
         } else {
             speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speeds, this.getRotation2d());
-
             this.drive(speeds);
         }
     }
 
     public void drive(ChassisSpeeds speeds) {
         SwerveModuleState[] moduleStates = DrivetrainConstants.KINEMATICS.toSwerveModuleStates(speeds);
-
         this.setModuleStates(moduleStates);
     }
 
@@ -157,11 +159,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
     }
 
     public IModuleInterface[] getModules() {
-        return new IModuleInterface[] {
-                this.frontLeft,
-                this.frontRight,
-                this.backLeft,
-                this.backRight
-        };
+        return new IModuleInterface[] { this.frontLeft, this.frontRight, this.backLeft, this.backRight };
     }
 }
