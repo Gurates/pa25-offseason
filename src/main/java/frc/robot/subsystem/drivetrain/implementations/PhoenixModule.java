@@ -1,4 +1,4 @@
-package frc.robot.susbsystems.drivetrain.implementations;
+package frc.robot.subsystem.drivetrain.implementations;
 
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
@@ -16,7 +16,7 @@ import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.units.Units;
 
 import frc.robot.constants.ModuleConstants;
-import frc.robot.susbsystems.drivetrain.interfaces.IModuleInterface;
+import frc.robot.subsystem.drivetrain.interfaces.IModuleInterface;
 import frc.robot.Robot;
 import frc.robot.constants.Conversions;
 

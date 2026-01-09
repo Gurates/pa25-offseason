@@ -1,4 +1,4 @@
-package frc.robot.susbsystems.drivetrain.interfaces;
+package frc.robot.subsystem.drivetrain.interfaces;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 

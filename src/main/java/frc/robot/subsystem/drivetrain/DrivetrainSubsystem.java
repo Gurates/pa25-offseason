@@ -1,4 +1,4 @@
-package frc.robot.susbsystems.drivetrain;
+package frc.robot.subsystem.drivetrain;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
@@ -13,15 +13,14 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.susbsystems.drivetrain.implementations.LimelightHelpers;
 import frc.robot.constants.AutoConstants;
 import frc.robot.constants.DrivetrainConstants;
 import frc.robot.constants.RobotConstants;
-import frc.robot.susbsystems.drivetrain.enums.DriveType;
-import frc.robot.susbsystems.drivetrain.interfaces.IGyroInterface;
-import frc.robot.susbsystems.drivetrain.interfaces.IModuleInterface;
+import frc.robot.subsystem.drivetrain.enums.DriveType;
+import frc.robot.subsystem.drivetrain.implementations.LimelightHelpers;
+import frc.robot.subsystem.drivetrain.interfaces.IGyroInterface;
+import frc.robot.subsystem.drivetrain.interfaces.IModuleInterface;
 import frc.robot.utils.Logger;
-import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 
 
@@ -76,9 +75,13 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         this.estimator.update(this.getRotation2d(), this.getModulePositions());
 
-        Logger.log("Drivetrain/Poses/OdometryPose", this.getPose());
-        System.out.println("AprilTag okundu");
-        aprilTagAlert.set(true);
+        // smartdashboarddan dereceler oku
+        if(frontLeft instanceof frc.robot.subsystem.drivetrain.implementations.PhoenixModule){
+            Logger.log("Drivetrain/RawAngles/FrontLeft", ((frc.robot.subsystem.drivetrain.implementations.PhoenixModule)frontLeft).getCANcoder().getDegrees());
+            Logger.log("Drivetrain/RawAngles/FrontRight", ((frc.robot.subsystem.drivetrain.implementations.PhoenixModule)frontRight).getCANcoder().getDegrees());
+            Logger.log("Drivetrain/RawAngles/BackLeft", ((frc.robot.subsystem.drivetrain.implementations.PhoenixModule)backLeft).getCANcoder().getDegrees());
+            Logger.log("Drivetrain/RawAngles/BackRight", ((frc.robot.subsystem.drivetrain.implementations.PhoenixModule)backRight).getCANcoder().getDegrees());
+        }
     }
     
     public void updateVisionOdometry() {
@@ -104,6 +107,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
         this.frontRight.setModuleState(moduleStates[1]);
         this.backLeft.setModuleState(moduleStates[2]);
         this.backRight.setModuleState(moduleStates[3]);
+
+        Logger.log("Drivetrain/TestStates/ModuleStates", moduleStates);
+        Logger.log("Drivetrain/TestStates/ModuleRealStates", this.getModuleStates());
     }
 
     public void drive(double xSpeed, double ySpeed, double rSpeed, DriveType driveType) {
@@ -132,6 +138,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 this.backLeft.getModuleState(),
                 this.backRight.getModuleState()
         };
+
     }
 
     public SwerveModulePosition[] getModulePositions() {

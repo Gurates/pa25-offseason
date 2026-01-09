@@ -3,8 +3,8 @@ package frc.robot.commands.drivetrain;
 import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.susbsystems.drivetrain.DrivetrainSubsystem;
-import frc.robot.susbsystems.drivetrain.enums.DriveType;
+import frc.robot.subsystem.drivetrain.DrivetrainSubsystem;
+import frc.robot.subsystem.drivetrain.enums.DriveType;
 
 public class DriveCommand extends Command {
 

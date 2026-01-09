@@ -1,4 +1,4 @@
-package frc.robot.susbsystems.drivetrain.implementations;
+package frc.robot.subsystem.drivetrain.implementations;
 
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.Radians;
@@ -13,7 +13,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Voltage;
 import frc.robot.constants.ModuleConstants;
-import frc.robot.susbsystems.drivetrain.interfaces.IModuleInterface;;
+import frc.robot.subsystem.drivetrain.interfaces.IModuleInterface;;
 
 public class SimModule implements IModuleInterface {
 

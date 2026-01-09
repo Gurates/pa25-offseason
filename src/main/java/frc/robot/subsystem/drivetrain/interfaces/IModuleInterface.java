@@ -1,4 +1,4 @@
-package frc.robot.susbsystems.drivetrain.interfaces;
+package frc.robot.subsystem.drivetrain.interfaces;
 
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;

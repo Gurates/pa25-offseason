@@ -1,4 +1,4 @@
-package frc.robot.susbsystems.drivetrain.enums;
+package frc.robot.subsystem.drivetrain.enums;
 
 public enum DriveType {
     FieldRelative,

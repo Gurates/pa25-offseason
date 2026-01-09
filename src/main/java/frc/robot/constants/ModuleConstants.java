@@ -36,7 +36,7 @@ public class ModuleConstants {
     public static final SensorDirectionValue cancoderInvert = chosenModule.cancoderInvert;
 
     //pıd
-    public static final double DRIVE_P = 20;
+    public static final double DRIVE_P = 0.7; // titreme
     public static final double DRIVE_I = 0.0;
     public static final double DRIVE_D = 0.0;
     public static final double DRIVE_IZ = 0.0;
@@ -48,9 +48,9 @@ public class ModuleConstants {
     public static final double ANGLE_IZ = 0.0;
 
     //feedforward
-    public static final double DRIVE_KS = 0.32;
-    public static final double DRIVE_KV = 1.51;
-    public static final double DRIVE_KA = 0.27;
+    public static final double DRIVE_KS = 0;
+    public static final double DRIVE_KV = 0;
+    public static final double DRIVE_KA = 0;
 
     public static final double OPEN_LOOP_RAMP = 0.25;
     public static final double CLOSED_LOOP_RAMP = 0.0;
@@ -82,30 +82,31 @@ public class ModuleConstants {
     public static final double MAX_ANGULAR_VELOCITY = 10.0;
 
     public static final class FrontLeft {
-        public static final int DRIVE_MOTOR_ID = 1;
-        public static final int ANGLE_MOTOR_ID = 2;
-        public static final int CANCODER_ID = 1;
+        public static final int DRIVE_MOTOR_ID = 3;
+        public static final int ANGLE_MOTOR_ID = 6;
+        public static final int CANCODER_ID = 11;
         public static final Rotation2d ANGLE_OFFSET = Rotation2d.fromDegrees(0.0);
+        
     }
 
     public static final class FrontRight {
-        public static final int DRIVE_MOTOR_ID = 3;
-        public static final int ANGLE_MOTOR_ID = 4;
-        public static final int CANCODER_ID = 2;
+        public static final int DRIVE_MOTOR_ID = 1;
+        public static final int ANGLE_MOTOR_ID = 7;
+        public static final int CANCODER_ID = 9;
         public static final Rotation2d ANGLE_OFFSET = Rotation2d.fromDegrees(0.0);
     }
 
     public static final class BackLeft {
-        public static final int DRIVE_MOTOR_ID = 5;
-        public static final int ANGLE_MOTOR_ID = 6;
-        public static final int CANCODER_ID = 3;
+        public static final int DRIVE_MOTOR_ID = 2;
+        public static final int ANGLE_MOTOR_ID = 4;
+        public static final int CANCODER_ID = 10;
         public static final Rotation2d ANGLE_OFFSET = Rotation2d.fromDegrees(0.0);
     }
 
     public static final class BackRight {
-        public static final int DRIVE_MOTOR_ID = 7;
-        public static final int ANGLE_MOTOR_ID = 8;
-        public static final int CANCODER_ID = 4;
+        public static final int DRIVE_MOTOR_ID = 0;
+        public static final int ANGLE_MOTOR_ID = 5;
+        public static final int CANCODER_ID = 8;
         public static final Rotation2d ANGLE_OFFSET = Rotation2d.fromDegrees(0.0);
     }
 }

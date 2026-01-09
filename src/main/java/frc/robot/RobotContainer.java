@@ -13,14 +13,14 @@ import frc.robot.commands.drivetrain.DriveCommand;
 import frc.robot.constants.ControllerConstants;
 import frc.robot.constants.DrivetrainConstants;
 import frc.robot.constants.RobotConstants;
-import frc.robot.susbsystems.drivetrain.DrivetrainSubsystem;
-import frc.robot.susbsystems.drivetrain.enums.DriveType;
-import frc.robot.susbsystems.drivetrain.implementations.PhoenixGyro;
-import frc.robot.susbsystems.drivetrain.implementations.PhoenixModule;
-import frc.robot.susbsystems.drivetrain.implementations.SimGyro;
-import frc.robot.susbsystems.drivetrain.implementations.SimModule;
-import frc.robot.susbsystems.drivetrain.interfaces.IGyroInterface;
-import frc.robot.susbsystems.drivetrain.interfaces.IModuleInterface;
+import frc.robot.subsystem.drivetrain.DrivetrainSubsystem;
+import frc.robot.subsystem.drivetrain.enums.DriveType;
+import frc.robot.subsystem.drivetrain.implementations.PhoenixGyro;
+import frc.robot.subsystem.drivetrain.implementations.PhoenixModule;
+import frc.robot.subsystem.drivetrain.implementations.SimGyro;
+import frc.robot.subsystem.drivetrain.implementations.SimModule;
+import frc.robot.subsystem.drivetrain.interfaces.IGyroInterface;
+import frc.robot.subsystem.drivetrain.interfaces.IModuleInterface;
 import frc.robot.utils.Logger;
 
 public class RobotContainer {

@@ -20,7 +20,7 @@ public final class CTREConfigs {
 
         // === Swerve Angle Motor Config ===
         swerveAngleFXConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-        swerveAngleFXConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        swerveAngleFXConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
 
         swerveAngleFXConfig.Feedback.SensorToMechanismRatio = ModuleConstants.STEER_GEAR_RATIO;
         swerveAngleFXConfig.ClosedLoopGeneral.ContinuousWrap = true;
