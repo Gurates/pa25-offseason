@@ -1,11 +1,13 @@
 package frc.robot.subsystem.drivetrain.implementations;
 
+import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -81,6 +83,15 @@ public class PhoenixModule implements IModuleInterface {
         mDriveMotor = new TalonFX(DRIVE_MOTOR_ID);
         mDriveMotor.getConfigurator().apply(Robot.ctreConfigs.swerveDriveFXConfig);
         mDriveMotor.getConfigurator().setPosition(0.0);
+
+
+        // inverted motors (1-3 || 0-2)
+        if(moduleNumber == 1 || moduleNumber == 3){
+            MotorOutputConfigs driveConfigs = new MotorOutputConfigs();
+
+            driveConfigs.Inverted = InvertedValue.Clockwise_Positive; // 
+            mDriveMotor.getConfigurator().apply(driveConfigs);
+        }
     }
 
 

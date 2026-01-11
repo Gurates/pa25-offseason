@@ -86,6 +86,7 @@ public class ModuleConstants {
         public static final int ANGLE_MOTOR_ID = 6;
         public static final int CANCODER_ID = 11;
         public static final Rotation2d ANGLE_OFFSET = Rotation2d.fromDegrees(0.0);
+        public static final boolean isInverted = false;
         
     }
 
@@ -94,6 +95,7 @@ public class ModuleConstants {
         public static final int ANGLE_MOTOR_ID = 7;
         public static final int CANCODER_ID = 9;
         public static final Rotation2d ANGLE_OFFSET = Rotation2d.fromDegrees(0.0);
+        public static final boolean isInverted = false;
     }
 
     public static final class BackLeft {
@@ -101,6 +103,7 @@ public class ModuleConstants {
         public static final int ANGLE_MOTOR_ID = 4;
         public static final int CANCODER_ID = 10;
         public static final Rotation2d ANGLE_OFFSET = Rotation2d.fromDegrees(0.0);
+        public static final boolean isInverted = false;
     }
 
     public static final class BackRight {
@@ -108,5 +111,6 @@ public class ModuleConstants {
         public static final int ANGLE_MOTOR_ID = 5;
         public static final int CANCODER_ID = 8;
         public static final Rotation2d ANGLE_OFFSET = Rotation2d.fromDegrees(0.0);
+        public static final boolean isInverted = false;
     }
 }
