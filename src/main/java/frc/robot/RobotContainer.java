@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.drivetrain.DriveCommand;
 import frc.robot.constants.ControllerConstants;
 import frc.robot.constants.DrivetrainConstants;
@@ -117,6 +118,10 @@ public class RobotContainer {
         } else {
             x.onTrue(Commands.runOnce(() -> drivetrainSubsystem.setPose(new edu.wpi.first.math.geometry.Pose2d())));
         }
+
+        //sysıd
+        a.whileTrue(drivetrainSubsystem.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+        b.whileTrue(drivetrainSubsystem.sysIdDynamic(SysIdRoutine.Direction.kForward));//
     }
 
     public Command getAutonomousCommand() {

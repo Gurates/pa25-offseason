@@ -20,4 +20,6 @@ public interface IModuleInterface {
     Angle getRawWheelPosition();
 
     void stop();
+    
+    double getDriveVelocity();
 }

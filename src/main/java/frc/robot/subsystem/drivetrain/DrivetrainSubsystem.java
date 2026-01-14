@@ -13,6 +13,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.constants.AutoConstants;
 import frc.robot.constants.DrivetrainConstants;
 import frc.robot.constants.RobotConstants;
@@ -22,6 +23,9 @@ import frc.robot.subsystem.drivetrain.interfaces.IGyroInterface;
 import frc.robot.subsystem.drivetrain.interfaces.IModuleInterface;
 import frc.robot.utils.Logger;
 import edu.wpi.first.wpilibj.Alert.AlertType;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+
 
 
 public class DrivetrainSubsystem extends SubsystemBase {
@@ -30,6 +34,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     private final IGyroInterface gyro;
     private final IModuleInterface frontLeft, frontRight, backLeft, backRight;
     private final PPHolonomicDriveController driveController;
+    private final SysIdRoutine sysIdRoutine;
 
     Alert aprilTagAlert = new Alert("AprilTag", AlertType.kError);
 
@@ -67,6 +72,40 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 this);
 
         AutoBuilder.buildAutoChooser();
+
+        sysIdRoutine = new SysIdRoutine(
+    new SysIdRoutine.Config(),
+    new SysIdRoutine.Mechanism(
+        voltage -> {
+            frontLeft.setDriveMotorVoltage(voltage);
+            frontRight.setDriveMotorVoltage(voltage);
+            backLeft.setDriveMotorVoltage(voltage);
+            backRight.setDriveMotorVoltage(voltage);
+        },
+        log -> {
+            log.motor("frontLeft")
+               .linearVelocity(edu.wpi.first.units.Units.MetersPerSecond.of(frontLeft.getDriveVelocity()))
+               .linearPosition(edu.wpi.first.units.Units.Meters.of(frontLeft.getModulePosition().distanceMeters))
+               .voltage(edu.wpi.first.units.Units.Volts.of(0));
+
+            log.motor("frontRight")
+               .linearVelocity(edu.wpi.first.units.Units.MetersPerSecond.of(frontRight.getDriveVelocity()))
+               .linearPosition(edu.wpi.first.units.Units.Meters.of(frontRight.getModulePosition().distanceMeters))
+               .voltage(edu.wpi.first.units.Units.Volts.of(0));
+
+            log.motor("backLeft")
+               .linearVelocity(edu.wpi.first.units.Units.MetersPerSecond.of(backLeft.getDriveVelocity()))
+               .linearPosition(edu.wpi.first.units.Units.Meters.of(backLeft.getModulePosition().distanceMeters))
+               .voltage(edu.wpi.first.units.Units.Volts.of(0));
+
+            log.motor("backRight")
+               .linearVelocity(edu.wpi.first.units.Units.MetersPerSecond.of(backRight.getDriveVelocity()))
+               .linearPosition(edu.wpi.first.units.Units.Meters.of(backRight.getModulePosition().distanceMeters))
+               .voltage(edu.wpi.first.units.Units.Volts.of(0));
+        },
+        this
+    )
+);
     }
 
     @Override
@@ -167,5 +206,14 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     public IModuleInterface[] getModules() {
         return new IModuleInterface[] { this.frontLeft, this.frontRight, this.backLeft, this.backRight };
+    }
+
+    // sysıd command
+    public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+        return sysIdRoutine.quasistatic(direction);
+    }
+    
+    public Command sysIdDynamic(SysIdRoutine.Direction direction) {
+        return sysIdRoutine.dynamic(direction);
     }
 }

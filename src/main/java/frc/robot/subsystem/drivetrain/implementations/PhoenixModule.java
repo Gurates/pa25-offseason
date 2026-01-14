@@ -165,4 +165,9 @@ public class PhoenixModule implements IModuleInterface {
         double absolutePosition = getCANcoder().getRotations() - angleOffset.getRotations();
         mAngleMotor.setPosition(absolutePosition);
     }
+    @Override
+    public double getDriveVelocity(){
+        double nativeRps = mDriveMotor.getVelocity().getValueAsDouble();
+        return Conversions.RPSToMPS(nativeRps, ModuleConstants.WHEEL_CIRCUMFERENCE);
+    }
 }

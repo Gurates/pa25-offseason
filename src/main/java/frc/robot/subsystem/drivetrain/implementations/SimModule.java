@@ -7,11 +7,14 @@ import static edu.wpi.first.units.Units.Volts;
 import org.ironmaple.simulation.drivesims.SwerveModuleSimulation;
 import org.ironmaple.simulation.motorsims.SimulatedMotorController;
 
+import com.ctre.phoenix6.hardware.TalonFX;
+
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Voltage;
+import frc.robot.constants.Conversions;
 import frc.robot.constants.ModuleConstants;
 import frc.robot.subsystem.drivetrain.interfaces.IModuleInterface;;
 
@@ -24,6 +27,7 @@ public class SimModule implements IModuleInterface {
   private final SimulatedMotorController.GenericMotorController angleMotor;
 
   private final ProfiledPIDController driveController, angleController;
+  private TalonFX mDriveMotor; // fix
 
   public SimModule(SwerveModuleSimulation moduleSimulation) {
     this.moduleSimulation = moduleSimulation;
@@ -113,4 +117,11 @@ public class SimModule implements IModuleInterface {
     driveMotor.requestVoltage(Volts.of(0));
     angleMotor.requestVoltage(Volts.of(0));
   }
+
+  //fix
+  @Override
+    public double getDriveVelocity(){
+        double nativeRps = mDriveMotor.getVelocity().getValueAsDouble();
+        return Conversions.RPSToMPS(nativeRps, ModuleConstants.WHEEL_CIRCUMFERENCE);
+    }
 }
